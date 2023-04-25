@@ -13,7 +13,7 @@
  ># Education:
   
  | Academic year | Standard | School name |
- | :--- | :----: | :----: | ---: |
+ | :--- | :----: | ---:|
  | 2008 - 2018 | 1st- 8th | Yeshwant Vidyalaya Ahmedpur |
  | 2019 - 2020 | 9th-10th | JNVL |
  | 2021 - 2022 | 11TH-12TH | SCJC |
