@@ -1,0 +1,83 @@
+body {
+    background-image: url("image.jpg");
+}
+
+
+.section1 {
+    border: 2px solid black;
+    background-color: lightsalmon;
+}
+
+#name {
+    font-weight: bold;
+    font-family: 'Times New Roman';
+    font-size: 13px;
+    text-align: left;
+}
+
+img {
+    float: right;
+    width: 172px;
+    height: 172px;
+}
+
+pre {
+    font-family: sans-serif;
+    color: blue;
+}
+
+.section2 {
+    background-color: lightblue;
+}
+
+table {
+    border-style: dotted;
+    border-spacing: 2px;
+    padding: 10px;
+}
+
+#col2 {
+    align-content: center;
+}
+
+#col1,
+#col3 {
+    align-content: left;
+}
+
+#spring {
+    float: left;
+    background-color: green;
+    border-width: 3px;
+}
+
+a:link {
+    color: blue;
+}
+
+a:visited {
+    color: gray;
+}
+
+a:active {
+    color: pink;
+}
+
+a:hover {
+    color: greenyellow;
+}
+
+#Autumn {
+    float: right;
+    background-color: lightpink;
+    border: 3px;
+}
+
+ol {
+    list-style-type: lower-roman;
+}
+
+.section4 {
+    background-color: brown;
+    font-size: 13px;
+}
