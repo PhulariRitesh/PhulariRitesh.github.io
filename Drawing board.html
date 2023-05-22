@@ -1,0 +1,224 @@
+<!--CSE Assignment on web development
+Name: Ritesh Prakashrao Phulari
+Branch:CSE
+Roll number:2203125
+-->
+
+<!--HTML PART of my webpage-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Title of the webpage-->
+    <title>
+        CSE Assignment
+    </title>
+    <!--Script for including external javascript library-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <!--CSS PART of the Webpage-->
+    <style>
+        body {
+            background-color: aqua;
+        }
+
+        h1 {
+            color: bisque;
+            box-shadow: 0cap;
+            background-color: blueviolet;
+        }
+
+        h1,
+        h2,
+        p {
+            text-align: center;
+        }
+
+        .paper2,
+        .paper1 {
+            text-align: left;
+        }
+
+        h2 {
+            color: #f10909;
+            background-color: yellow;
+        }
+
+        h3 {
+            color: orchid;
+        }
+
+        p {
+            color: blue;
+        }
+
+        label {
+            color: orangered;
+        }
+
+        input {
+            background-color: burlywood;
+        }
+
+        .button {
+            color: brown;
+            transition-property: all;
+        }
+
+        button:hover {
+            color: blueviolet;
+            transition: cubic-bezier(0.05, 1.52, 0.58, 1.85);
+            transition-duration: 0.3S;
+            transform: translateY(-5px) scale(1.3);
+        }
+
+        canvas {
+            background-color: beige;
+        }
+
+        .reset {
+            background-color: #f10909;
+            color: yellow;
+        }
+    </style>
+    <!--CSS part ends here-->
+</head>
+
+<body>
+    <header>
+        <h1><b>Drawing board</b></h1>
+        <p>This webpage helps you to visualize simple geometrical shapes such as circle and rectangle.</p>
+    </header>
+    <hr />
+    <main>
+        <div class="circle">
+            <h2><b>Circle</b></h2>
+            <P>The <i>area</i> of a circle with radius r is given by $\pi r^2$.Similarly the <i>perimeter</i> of a
+                circle with
+                radius r is given<br />
+                by $ 2\pi r $.Now let's visualize the circle using JavaScript and HTML.</P>
+            <br />
+            <label for="radius"><b>Enter the radius r:</b></label>
+            <input type="text" class="r" id="radius" name="radius">
+            <br /><br />
+            <button type="button" class="button" onclick="validate_radius()">Validate Radius</button>
+            <button type="button" class="button" onclick="draw_circle()">Draw</button>
+            <button type="button" class="button" onclick="area_and_perimeter1()">Compute Area/Perimeter</button>
+            <br />
+            <br />
+            <h3 id="circle">Circle:NA.</h3>
+            <canvas id="paper1" width="400px" height="400px" style="border:2px solid #f10909;">
+                Your browser does not support the HTML5 canvas tag.</canvas>
+            <p class="paper1">Paper size:400px X 400px.Max allowed radius:200.</p>
+        </div>
+        <hr />
+        <div class="rectangle">
+            <h2><b>Rectangle</b></h2>
+            <P>The <i>area</i> of a rectangle with width w and height h is given by wh.Similarly, the <i>perimeter</i>
+                of a
+                rectangle<br /> with width w and height h is given by 2(w+h).Now let's visualize the rectangle using
+                JavaScript and HTML.</P>
+            <br />
+            <label for="width"><b>Enter the width w:</b></label><input type="text" id="width" class="w" name="width">
+            <label for="height"><b>Enter the height h:</b></label><input type="text" id="height" class="h"
+                name="height">
+            <br /><br />
+            <button type="button" class="button" onclick="validate_length()">Validate width/height</button>
+            <button type="button" class="button" onclick="draw_rectangle()">Draw</button>
+            <button type="button" class="button" onclick="area_and_perimeter()">Compute Area/Perimeter</button>
+            <br /> <br />
+            <h3 id="rect">Rectangle:NA.</h3>
+            <canvas id="rectangle" width="600pt" height="400pt" style="border:2px solid #f10909;">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+            <p class="paper2">Paper size:600px X 400px.Max allowed width:600 and height:400.</p>
+        </div>
+    </main>
+    <hr />
+    <br />
+    <footer>
+        <button type="button" class="reset" onclick="cl()">Clear inputs</button>
+    </footer>
+    <!--HTML part ends here-->
+
+    <!--JavaScript part of my webpage-->
+    <script>
+        //This function is for draw button of rectangle
+        function draw_rectangle() {
+            var ctx = document.getElementById('rectangle').getContext("2d");
+            var w = document.getElementById('width').value;
+            var h = document.getElementById('height').value;
+            ctx.beginPath();
+            ctx.rect(10, 10, w, h);
+            ctx.stroke();
+        }
+        //This function is for calculating area and perimeter of ractangle
+        function area_and_perimeter() {
+            var a = document.getElementById('width').value;
+            var b = document.getElementById('height').value;
+            var area = a * b;
+            var perimeter = (2 * a) + (2 * b);
+            document.getElementById('rect').textContent = `Rectangle: Area = ${area} and Perimeter = ${perimeter}`
+        }
+        //This function is for validating width and height
+        function validate_length() {
+            var width = document.getElementById('width').value;
+            var height = document.getElementById('height').value;
+            if (width <= 590 && height <= 390 && height > 0 && width > 0) {
+                if (width == height) {
+                    alert("Lengths are valid and square will be displayed.")
+                } else {
+                    alert("Lengths are valid.")
+                }
+            } else if (width <= 590 && width > 0) {
+                alert("height entered is invalid.")
+            } else if (height <= 390 && height > 0) {
+                alert("Width entered is invalid.")
+            } else {
+                alert("Both lengths entered are invalid.")
+            }
+        }
+        //This function is for draw button of circle
+        function draw_circle() {
+            let r = document.getElementById("radius").value;
+            var ctx = document.getElementById("paper1").getContext("2d");
+            ctx.beginPath();
+            ctx.arc(200, 200, r, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+        //This function is for calculating area and perimeter of circle
+        function area_and_perimeter1() {
+            var R = document.getElementById("radius").value;
+            var areac = Math.PI * R * R;
+            var perimeterc = Math.PI * 2 * R;
+            document.getElementById('circle').textContent = `Circle: Area = ${areac} and Perimeter = ${perimeterc}`
+        }
+        //This function is for validating radius
+        function validate_radius() {
+            var radius = document.getElementById("radius").value;
+            if (radius <= 200 && radius > 0) {
+                alert("Radius is valid.")
+            } else if (radius < 0) {
+                alert("Radius cannot be negative.")
+            } else if (radius == 0) {
+                alert("It will display point circle.")
+            } else if (radius > 0) {
+                alert("Radius cannot exceed 200.")
+            }
+        }
+        //This function is for clear inputs button
+        function cl() {
+            document.getElementById("radius").value = '';
+            document.getElementById("width").value = '';
+            document.getElementById("height").value = '';
+        }
+
+    </script><!--This is end of JavaScript part of my webpage-->
+
+    <!--Script for configuring MathJax-->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+    </script>
+</body>
+
+</html>
