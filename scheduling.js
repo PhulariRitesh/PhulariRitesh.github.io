@@ -121,7 +121,7 @@ function addToResultTable(process) {
         <td class="border px-4 py-2">${process.id}</td>
         <td class="border px-4 py-2">${process.burstTime}</td>
         <td class="border px-4 py-2">${process.arrivalTime}</td>
-        <td class="border px-4 py-2">${(process.frequency * 10).toFixed(2)} MHz</td>
+        <td class="border px-4 py-2">${(process.frequency * 3).toFixed(2)} MHz</td>
         <td class="border px-4 py-2">${process.voltage.toFixed(2)} V</td>
         <td class="border px-4 py-2">${energy.toFixed(2)} J</td>
         <td class="border px-4 py-2">${totalEnergy.toFixed(2)} J</td>
