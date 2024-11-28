@@ -1,3 +1,6 @@
+#Programmers : 1. Ritesh Prakashrao Phulari (2203125)
+#              2. Shreeraj Kishor Deshmukh (2203130)
+
 # Instructions to run the code:
 # 1. Save this script as dvfs.py.
 # 2. Run the script using the command:
