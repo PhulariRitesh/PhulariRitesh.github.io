@@ -1,3 +1,8 @@
+# Instructions to run the code:
+# 1. Save this script as dvfs.py.
+# 2. Run the script using the command:
+#    python dvfs.py
+
 import random
 import matplotlib.pyplot as plt
 import numpy as np
@@ -27,6 +32,7 @@ class AdvancedDVFSController:
             self.system_load = system_load
 
     def __init__(self):
+        # Defining DVFS levels with different frequencies and power consumptions
         self.dvfs_levels = [
             self.DVFSLevel(800, 10.0, "Very Low"),    # 0.8 GHz, 10W
             self.DVFSLevel(1000, 15.0, "Low"),        # 1.0 GHz, 15W
@@ -39,6 +45,7 @@ class AdvancedDVFSController:
         self.process_metrics_log = []
 
     def generate_processes(self, num_processes):
+        # Generating a list of processes with random arrival and burst times
         processes = []
         for i in range(num_processes):
             arrival_time = random.uniform(0.0, 5.0)
@@ -49,9 +56,11 @@ class AdvancedDVFSController:
         return processes
 
     def calculate_process_energy(self, process, time_slice):
+        # Calculating the energy consumed by a process during a time slice
         return process.assigned_level.power * (time_slice / 3600.0)  # Energy in Wh
 
     def select_optimal_dvfs_level(self, system_load):
+        # Function to Select the optimal DVFS level based on the system load
         if system_load > 0.85:
             return self.dvfs_levels[6]  # Very High Performance
         elif system_load > 0.7:
@@ -68,6 +77,7 @@ class AdvancedDVFSController:
             return self.dvfs_levels[0]  # Very Low Performance
 
     def simulate_process_scheduling(self, num_processes):
+        # Function to Simulate the scheduling of processes and log their metrics
         processes = self.generate_processes(num_processes)
         current_time = 0.0
         total_system_energy = 0.0
@@ -114,6 +124,7 @@ class AdvancedDVFSController:
         self.generate_plot(time_points, system_load_curve)
 
     def generate_plot(self, times, system_loads):
+        # Generate plots for power consumption, cumulative energy, frequency scaling, and system load
         energies = [m.energy for m in self.process_metrics_log]
         cumulative_energies = [m.cumulative_energy for m in self.process_metrics_log]
         frequencies = [m.frequency for m in self.process_metrics_log]

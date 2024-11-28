@@ -1,0 +1,277 @@
+<!--
+Instructions for Using the DVFS Simulation:
+
+1. First, enter the Burst Time and Arrival Time for each process in the respective input fields.
+
+2. Click the "Add Process" button to add a process to the Ready Queue. 
+    - You can add multiple processes one by one.
+
+3. To delete a process, click the "Delete Process" button:
+    - A popup will appear asking for the Process ID.
+    - Enter the ID of the process you wish to delete and confirm.
+
+4. Once all processes are added, click the "Start Simulation" button to run the simulation.
+
+5. During the simulation, you will see animations demonstrating the scheduling of processes.
+
+6. After the simulation completes, scroll down to view the Result Table.
+    - The table includes details such as Process ID, Burst Time, Arrival Time, Frequency, Voltage, and Energy Consumption.
+
+Note: Ensure all processes are correctly entered before starting the simulation to avoid unexpected results.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVFS Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+
+
+        /* Process Box Styling */
+        .process-box {
+            border: 2px solid red;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px;
+            width: 200px;
+            text-align: center;
+            opacity: 1; /* Set initial opacity to 1 */
+            transition: all 1s ease;
+        }
+
+        /* Process Moving Animation */
+        .moving-process {
+            animation: moveProcess 1s forwards;
+        }
+
+        /* Keyframes for Animating Movement of Processes */
+        @keyframes moveProcess {
+            0% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* State-based Colors */
+        .ready {
+            background-color: #e6fffa;
+        }
+
+        .executing {
+            background-color: #bbf7d0;
+        }
+
+        .completed {
+            background-color: #d1fae5;
+        }
+
+        /* Row Layout */
+        .queue-row {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .queue-row > .process-box {
+            transition: transform 0.5s;
+        }
+
+        .row-header {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Animation for Row Transitions */
+        @keyframes moveToExecution {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(300px);
+            }
+        }
+
+        @keyframes moveToCompleted {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(400px);
+            }
+        }
+
+        .executing-animation {
+            animation: moveToExecution 1.5s forwards;
+        }
+
+        .completed-animation {
+            animation: moveToCompleted 1.5s forwards;
+        }
+
+        #result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #result-table th, #result-table td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+        }
+
+        table {
+              border-collapse: collapse;
+            table-layout: fixed;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+             text-align: center;
+              border: 1px solid #333;
+        }
+
+        tbody tr:nth-child(odd) {
+            tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Responsive Table */
+        @media (max-width: 640px) {
+            table {
+                border: 0;
+            }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+            table td::before {
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            table td:last-child {
+                border-bottom: 0;
+            }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+
+    <div class="container mx-auto max-w-4xl">
+        <h1 class="text-4xl text-center font-bold mb-6">Dynamic Voltage and Frequency Scaling (DVFS) Simulation</h1>
+
+        <h2><b>Creators: </b> 1) Ritesh Prakashrao Phulari (2203125) <br/>
+        2) Shreeraj Kishor Deshmukh (2203130)</h2>
+        <!-- Input Form for Processes -->
+        <div class="space-y-4 mb-6">
+            <div>
+                <label for="burst-time" class="block text-xl">Burst Time</label>
+                <input type="number" id="burst-time" class="w-1/2 p-2  border rounded-md" placeholder="Enter Burst Time">
+            </div>
+            <div>
+                <label for="arrival-time" class="block text-lg">Arrival Time</label>
+                <input type="number" id="arrival-time" class="w-1/2 p-2 border rounded-md" placeholder="Enter Arrival Time">
+            </div>
+            <div class="flex space-x-4">
+                <button onclick="addProcess()" class="w-1/2 p-2 bg-blue-500 text-white rounded-md">Add Process</button>
+                <button onclick="deleteProcess()" class="w-1/2 p-2 bg-red-500 text-white rounded-md">Delete Process</button>
+            </div>
+        </div>
+
+        <!-- Process Rows for Ready Queue, Executing, and Completed -->
+        <div class="queue-row">
+            <div class="w-full">
+                <div class="row-header">Ready Queue</div>
+                <div id="ready-queue" class="flex justify-start"></div>
+            </div>
+
+            <div class="w-full">
+                <div class="row-header">Executing</div>
+                <div id="executing-queue" class="flex justify-start"></div>
+            </div>
+
+            <div class="w-full">
+                <div class="row-header">Completed</div>
+                <div id="completed-queue" class="flex justify-start"></div>
+            </div>
+        </div>
+
+        <!-- Simulation Button -->
+        <button onclick="simulateScheduling()" class="w-full p-3 bg-green-500 text-white rounded-md mt-6">Start Simulation</button>
+
+        <!-- Result Output -->
+        <div id="simulation-result" class="mt-6 p-4 bg-gray-200 rounded-md hidden">
+            <h2 class="text-xl font-bold mb-4">Simulation Results:</h2>
+            <table id="final-table" class="w-full table-auto border-collapse border border-gray-300 mb-6">
+                <thead>
+                    <tr>
+                        <th class="border px-4 py-2">Process ID</th>
+                        <th class="border px-4 py-2">Burst Time</th>
+                        <th class="border px-4 py-2">Arrival Time</th>
+                        <th class="border px-4 py-2">Frequency (MHz)</th>
+                        <th class="border px-4 py-2">Voltage (V)</th>
+                        <th class="border px-4 py-2">Individual Energy</th>
+                        <th class="border px-4 py-2">Total Energy</th>
+                    </tr>
+                </thead>
+                <tbody id="result-table">
+                    <!-- Simulation results will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function clearProcessBoxes() {
+            document.getElementById('ready-queue').innerHTML = '';
+            document.getElementById('executing-queue').innerHTML = '';
+            document.getElementById('completed-queue').innerHTML = '';
+        }
+
+        function simulateScheduling() {
+            clearProcessBoxes();
+            // Your existing simulation logic here
+            document.getElementById('simulation-result').classList.remove('hidden');
+        }
+    </script>
+    <script src="scheduling.js"></script>
+</body>
+</html>
